@@ -5,6 +5,7 @@ import com.example.JournalApp.repository.JournalEntryRepo;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -16,6 +17,7 @@ public class JournalEntryService {
     @Autowired
     private UserService userService;
 
+    @Transactional
     public JournalEntry saveEntry(JournalEntry entry, String username){
         User user = userService.findByUserName(username);
 
@@ -34,6 +36,7 @@ public class JournalEntryService {
         return journalEntryRepo.findById(id);
     }
 
+    @Transactional
     public void removeEntry(ObjectId id, String username){
         User user = userService.findByUserName(username);
         user.getJournalEntries().removeIf(x -> x.getId().equals(id));
